@@ -138,7 +138,7 @@ add action=drop chain=forward dst-port=67 ip-protocol=udp mac-protocol=ip src-po
  DHCP Security : DHCP ALert - Masukkan kedalam script DHCP Server
 /ip dhcp-server set authoritative=yes
 
-
+==========================================================================================
 /ip firewall address-list
 add address=192.168.11.0/24 list=LOCAL
 add address=192.168.31.0/24 list=LOCAL
@@ -354,4 +354,5 @@ add chain=virus protocol=tcp action=drop dst-port=5880-5889 comment="Y3K RAT"
 add chain=virus protocol=tcp action=drop dst-port=6000 comment="The Thing"
 add chain=virus protocol=tcp action=drop dst-port=6006 comment="Bad Blood"
 add chain=virus protocol=tcp action=drop dst-port=6272 comment="Secret Service"
+
 
