@@ -26,7 +26,7 @@ add chain=forward connection-state=new action=jump jump-target=block-ddos commen
 add chain=forward connection-state=new src-address-list=ddoser1 dst-address-list=ddosed1 action=drop
 add chain=forward connection-state=new src-address-list=ddoser2 dst-address-list=ddosed2 action=drop
 add chain=forward connection-state=new src-address-list=ddoser3 dst-address-list=ddosed3 action=drop
-add chain=block-ddos dst-limit=32,32,src-and-dst-addresses/10s action=return
+add chain=block-ddos dst-limit=32,32,src-and-dst-addresses/10s src-address-list=LOCAL action=return
 add chain=block-ddos action=add-dst-to-address-list address-list=ddosed1 address-list-timeout=2m
 add chain=block-ddos action=add-dst-to-address-list address-list=ddosed2 dst-address-list=ddosed1 address-list-timeout=2m
 add chain=block-ddos action=add-dst-to-address-list address-list=ddosed3 dst-address-list=ddosed2 address-list-timeout=2m
@@ -340,6 +340,7 @@ add chain=virus protocol=tcp action=drop dst-port=5880-5889 comment="Y3K RAT"
 add chain=virus protocol=tcp action=drop dst-port=6000 comment="The Thing"
 add chain=virus protocol=tcp action=drop dst-port=6006 comment="Bad Blood"
 add chain=virus protocol=tcp action=drop dst-port=6272 comment="Secret Service"
+
 
 
 
