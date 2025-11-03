@@ -146,6 +146,10 @@ add address=192.168.21.0/24 list=LOCAL
 add address=192.168.3.0/24 list=LOCAL
 add address=192.168.18.0/24 list=MODEM
 add address=192.168.1.0/24 list=MODEM
+==========================================================================================
+Mencegah Pengguna NetCut di Mikrotik
+/ip firewall raw add action=add-src-to-address-list address-list=IP_NETCUT address-list-timeout=00:10:00 chain=prerouting content=.arcai.com dst-address-list=!LOCAL src-address-list=LOCAL comment="Mencegah Pengguna NetCut"
+/ip firewall filter add chain=forward action=drop src-address-list=IP_NETCUT comment="Mencegah Pengguna NetCut"
 
 ==========================================================================================
 BLOCK VIRUS
@@ -354,6 +358,7 @@ add chain=virus protocol=tcp action=drop dst-port=5880-5889 comment="Y3K RAT"
 add chain=virus protocol=tcp action=drop dst-port=6000 comment="The Thing"
 add chain=virus protocol=tcp action=drop dst-port=6006 comment="Bad Blood"
 add chain=virus protocol=tcp action=drop dst-port=6272 comment="Secret Service"
+
 
 
 
