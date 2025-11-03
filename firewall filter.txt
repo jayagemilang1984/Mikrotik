@@ -7,24 +7,6 @@ BLOKIR PELANGGAN PAKAI MAC-ADDRESS
 /ip firewall filter
 add chain=forward src-mac-address=aa:bb:cc:dd:ee:ff action=drop comment="Nama Pelanggan"
 
-==============================================================================
-Protect Connection With ANTI NETCUT - Mikrotik Script RouterOS
-/ip firewall address-list add list=netcut address=www.arcai.com
-/ip firewall mangle add action=add-src-to-address-list address-list=NetcutUser address-list-timeout=1h5m chain=prerouting dst-address-list=netcut dst-port=80 protocol=tcp
-/ip firewall filter add action=drop chain=forward comment=NetCut src-address-list=NetcutUser
-/system scheduler add interval=10m name="AutoBlockNetcut"
-
-# Open System Scheduler and enter this script into "AutoBlockNetcut"
-
-local a [/ip firewall address-list get [find list="NetcutUser"] address]
-local b [/ip hotspot active get [find address=$a] mac-address]
-if ($a != "") do={[
-/ip hotspot ip-binding add mac-address="$b" address="$a" type=blocked
-/ip firewall address-list remove [find address="$a"]
-/system scheduler add name ($a)  interval="01:00:00" on "/ip hotspot ip-binding remove [find mac-address=$b]
-/system scheduler remove [find name=$a]"
-]}
-
 ==========================================================================================
 
 /ip firewall filter
@@ -358,6 +340,7 @@ add chain=virus protocol=tcp action=drop dst-port=5880-5889 comment="Y3K RAT"
 add chain=virus protocol=tcp action=drop dst-port=6000 comment="The Thing"
 add chain=virus protocol=tcp action=drop dst-port=6006 comment="Bad Blood"
 add chain=virus protocol=tcp action=drop dst-port=6272 comment="Secret Service"
+
 
 
 
