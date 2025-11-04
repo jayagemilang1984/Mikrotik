@@ -139,7 +139,7 @@ Mencegah Pengguna NetCut di Mikrotik
 # DDoS Attack Mitigation Script
 /ip firewall filter
 add action=drop chain=input connection-limit=50,32 protocol=tcp comment="TCP Connection Limit"
-add action=drop chain=input connection-state=new limit=1000,5 protocol=tcp comment="SYN Flood Protection"
+add action=drop chain=input connection-state=new limit=1000,5 protocol=tcp comment="SYN Flood Protection" disabled=yes
 add action=drop chain=input connection-state=new limit=1000,5 protocol=udp comment="UDP Flood Protection"
 add action=drop chain=input connection-state=new limit=1000,5 protocol=icmp comment="ICMP Flood Protection"
 add action=drop chain=input in-interface-list=WAN src-address-list=ddos_blacklist comment="Drop Known Attackers"
@@ -377,6 +377,7 @@ add chain=virus protocol=tcp action=drop dst-port=5880-5889 comment="Y3K RAT"
 add chain=virus protocol=tcp action=drop dst-port=6000 comment="The Thing"
 add chain=virus protocol=tcp action=drop dst-port=6006 comment="Bad Blood"
 add chain=virus protocol=tcp action=drop dst-port=6272 comment="Secret Service"
+
 
 
 
