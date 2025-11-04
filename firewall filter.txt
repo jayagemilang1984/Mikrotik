@@ -136,6 +136,41 @@ Mencegah Pengguna NetCut di Mikrotik
 /ip firewall filter add chain=forward action=drop src-address-list=IP_NETCUT comment="Mencegah Pengguna NetCut"
 
 ==========================================================================================
+# DDoS Attack Mitigation Script
+/ip firewall filter
+add action=drop chain=input connection-limit=50,32 protocol=tcp comment="TCP Connection Limit"
+add action=drop chain=input connection-state=new limit=1000,5 protocol=tcp comment="SYN Flood Protection"
+add action=drop chain=input connection-state=new limit=1000,5 protocol=udp comment="UDP Flood Protection"
+add action=drop chain=input connection-state=new limit=1000,5 protocol=icmp comment="ICMP Flood Protection"
+add action=drop chain=input in-interface-list=WAN src-address-list=ddos_blacklist comment="Drop Known Attackers"
+add action=add-src-to-address-list address-list=ddos_blacklist address-list-timeout=1d chain=input connection-limit=100,32 protocol=tcp comment="Blacklist TCP Flooders"
+add action=add-src-to-address-list address-list=ddos_blacklist address-list-timeout=1d chain=input connection-limit=100,32 protocol=udp comment="Blacklist UDP Flooders"
+add action=drop chain=input protocol=udp dst-port=53,123,1900,5353 limit=1000,5 comment="DNS/NTP/SSDP Amplification Protection"
+==========================================================================================
+/ip firewall connection tracking
+set tcp-syncookie=yes
+==========================================================================================
+/tool traffic-monitor
+add name="Traffic Monitor Transmitted" interface=bridge1 traffic=transmitted trigger=above threshold=100M on-event=ddos_protection comment="Auto Trigger DDoS Protection"
+add name="Traffic Monitor Received" interface=bridge1 traffic=received trigger=above threshold=100M on-event=ddos_protection comment="Auto Trigger DDoS Protection"
+
+/system script
+add name=ddos_protection source="/ip firewall connection tracking set enabled=no; delay 5; /ip firewall connection tracking set enabled=yes"
+
+==========================================================================================
+
+/ip firewall connection tracking
+set tcp-syn-sent-timeout=20s
+set tcp-syn-received-timeout=20s
+set tcp-close-wait-timeout=15s
+
+/tool bandwidth-server
+set enabled=no
+
+/tool mac-server
+set allowed-interface-list=none
+
+==========================================================================================
 BLOCK VIRUS
 add chain= virus protocol= tcp dst-port= 135-139 action= drop comment= "Blokir Blaster Worm"
 add chain= virus protocol= udp dst-port= 135-139 action= drop comment= "Blokir Messenger Worm"  
@@ -342,6 +377,7 @@ add chain=virus protocol=tcp action=drop dst-port=5880-5889 comment="Y3K RAT"
 add chain=virus protocol=tcp action=drop dst-port=6000 comment="The Thing"
 add chain=virus protocol=tcp action=drop dst-port=6006 comment="Bad Blood"
 add chain=virus protocol=tcp action=drop dst-port=6272 comment="Secret Service"
+
 
 
 
