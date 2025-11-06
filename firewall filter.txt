@@ -166,7 +166,7 @@ add action=drop chain=input connection-state=new limit=1000,5 protocol=icmp comm
 add action=drop chain=input in-interface-list=WAN src-address-list=ddos_blacklist comment="Drop Known Attackers"
 add action=add-src-to-address-list address-list=ddos_blacklist address-list-timeout=1d chain=input connection-limit=100,32 protocol=tcp comment="Blacklist TCP Flooders"
 add action=add-src-to-address-list address-list=ddos_blacklist address-list-timeout=1d chain=input connection-limit=100,32 protocol=udp comment="Blacklist UDP Flooders"
-add action=drop chain=input protocol=udp dst-port=53,123,1900,5353 limit=1000,5 comment="DNS/NTP/SSDP Amplification Protection"
+add action=drop chain=input protocol=udp dst-port=53,1900,5353 limit=1000,5 comment="DNS/SSDP Amplification Protection"
 
 ==========================================================================================
 /ip firewall connection tracking
@@ -462,3 +462,4 @@ add chain=virus protocol=tcp action=drop dst-port=5880-5889 comment="Y3K RAT"
 add chain=virus protocol=tcp action=drop dst-port=6000 comment="The Thing"
 add chain=virus protocol=tcp action=drop dst-port=6006 comment="Bad Blood"
 add chain=virus protocol=tcp action=drop dst-port=6272 comment="Secret Service"
+
